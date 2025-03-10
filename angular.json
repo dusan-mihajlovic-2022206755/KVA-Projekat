@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "klijentske-veb-aplikacije-2025": {
+    "kva-projekat": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/klijentske-veb-aplikacije-2025",
+            "outputPath": "dist/kva-projekat",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "klijentske-veb-aplikacije-2025:build:production"
+              "buildTarget": "kva-projekat:build:production"
             },
             "development": {
-              "buildTarget": "klijentske-veb-aplikacije-2025:build:development"
+              "buildTarget": "kva-projekat:build:development"
             }
           },
           "defaultConfiguration": "development"
