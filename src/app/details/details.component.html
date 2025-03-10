@@ -1,0 +1,29 @@
+<div class="wrapper" *ngIf="flight">
+    <h1>{{flight.destination}}</h1>
+    <div class="flight-content">
+        <img [src]="utils.generateDestinationImage(flight.destination)" [alt]="flight.destination">
+        <mat-card class="flight-card" appearance="outlined">
+            <mat-card-content>
+                <h3>Flight Details</h3>
+                <mat-list role="list">
+                    <mat-list-item>Scheduled At: {{utils.formatDate(flight.scheduledAt)}}</mat-list-item>
+                    <mat-list-item>Flight Number: {{flight.flightNumber}}</mat-list-item>
+                    <mat-list-item>Airplane Model: {{flight.plane}}</mat-list-item>
+                    <mat-list-item>Flight Type: {{flight.type.name}}</mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <a mat-button [routerLink]="['/details/'+flight.id+'/order']">
+                    <i class="fa-solid fa-cart-shopping"></i> Book Now
+                </a>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div class="flight-content">
+        <mat-card class="flight-map">
+            <iframe [src]="generateMapLink() | safe" width="860" height="600"></iframe>
+        </mat-card>
+    </div>
+</div>
+
+<app-loading *ngIf="!flight" />

@@ -1,0 +1,26 @@
+.user-card {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 350px;
+}
+
+.actions {
+    min-width: 300px;
+    height: 52px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.no-order {
+    margin-top: 30px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.no-border {
+    margin: 0;
+    padding: 0;
+}
