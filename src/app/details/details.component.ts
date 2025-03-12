@@ -1,7 +1,8 @@
+/*
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FlightModel } from '../../models/flight.model';
-import { FlightService } from '../../services/flight.service';
+import { MovieService } from '../../services/movieService';
 import { NgIf } from '@angular/common';
 import { UtilsService } from '../../services/utils.service';
 import { LoadingComponent } from "../loading/loading.component";
@@ -22,7 +23,7 @@ export class DetailsComponent {
 
   public constructor(private route: ActivatedRoute, public utils: UtilsService) {
     route.params.subscribe(params => {
-      FlightService.getFlightById(params['id'])
+      MovieService.getMovieById(params['id'])
         .then(rsp => {
           this.flight = rsp.data
         })
@@ -33,3 +34,4 @@ export class DetailsComponent {
     return `https://www.google.com/maps?output=embed&q=${this.flight?.destination}`
   }
 }
+*/

@@ -9,7 +9,7 @@
             <mat-form-field>
                 <mat-label>Select Destination</mat-label>
                 <mat-select (selectionChange)="doSelectDestination($event)" [(ngModel)]="selectedDestination">
-                    <mat-option *ngFor="let dest of destinationList" [value]="dest">
+                    <mat-option *ngFor="let dest of actorsList" [value]="dest">
                         {{dest}}
                     </mat-option>
                 </mat-select>

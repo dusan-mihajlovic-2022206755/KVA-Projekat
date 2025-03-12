@@ -1,8 +1,9 @@
+/*
 import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { FlightModel } from '../../models/flight.model';
+import { MovieModel } from '../../models/movie.model';
 import { NgFor, NgIf } from '@angular/common';
-import { FlightService } from '../../services/flight.service';
+import { MovieService } from '../../services/movieService';
 import { MatButtonModule } from '@angular/material/button';
 import { UtilsService } from '../../services/utils.service';
 import { LoadingComponent } from "../loading/loading.component";
@@ -33,17 +34,14 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class SearchComponent {
   displayedColumns: string[] = ['id', 'destination', 'flightNumber', 'scheduledAt', 'actions'];
-  allData: FlightModel[] | null = null
-  destinationList: string[] = []
-  selectedDestination: string | null = null
-  dataSource: FlightModel[] | null = null
+  allData: MovieModel[] | null = null
+  dataSource: MovieModel[] | null = null
 
   public constructor(public utils: UtilsService) {
-    FlightService.getFlightList()
+    MovieService.getMovies()
       .then(rsp => {
         this.allData = rsp.data
         this.dataSource = rsp.data
-        this.destinationList = rsp.data.map((obj: FlightModel) => obj.destination)
       })
   }
 
@@ -66,3 +64,4 @@ export class SearchComponent {
     this.dataSource = this.allData!.filter(obj=>obj.destination === this.selectedDestination)
   }
 }
+*/

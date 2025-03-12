@@ -1,7 +1,8 @@
+/*
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlightModel } from '../../models/flight.model';
-import { FlightService } from '../../services/flight.service';
+import { MovieService } from '../../services/movieService';
 import { UtilsService } from '../../services/utils.service';
 import { MatCardModule } from '@angular/material/card';
 import { NgFor, NgIf } from '@angular/common';
@@ -29,7 +30,7 @@ export class OrderComponent {
 
   public constructor(private route: ActivatedRoute, public utils: UtilsService, private router: Router) {
     route.params.subscribe(params => {
-      FlightService.getFlightById(params['id'])
+      MovieService.getMovieById(params['id'])
         .then(rsp => {
           this.flight = rsp.data
         })
@@ -52,3 +53,4 @@ export class OrderComponent {
     result ? this.router.navigate(['/user']) : alert('An error occured while creating an order')
   }
 }
+*/
