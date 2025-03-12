@@ -17,10 +17,9 @@ import {Projection} from '../../models/projection.model';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  public movies: MovieModel[] | null = null;
+  private movies: MovieModel[] | null = null;
   public projections: Projection[] | null = null;
   public error: string | null = null;
-
   constructor(
     public utils: UtilsService
   ) {
@@ -42,12 +41,6 @@ export class HomeComponent {
       });
   }
 
-  public getMovieActors(movieModel: MovieModel): string {
-    return movieModel.movieActors?.map(x => x.actor.name).join(', ') || '';
-  }
 
-  public getMovieGenres(movieModel: MovieModel): string {
-    return movieModel.movieGenres?.map(x => x.genre.name).join(', ') || '';
-  }
-
+  protected readonly MovieService = MovieService;
 }

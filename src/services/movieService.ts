@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {MovieModel} from '../models/movie.model';
 
 const client = axios.create({
     baseURL: 'https://movie.pequla.com/api/',
@@ -34,4 +35,38 @@ export class MovieService {
     static async getDestinations() {
         return client.get('/movie/movieActors')
     }
+    public static getMovieActors(movieModel: MovieModel): string {
+      return movieModel.movieActors?.map(x => x.actor.name).join(', ') || '';
+    }
+
+    public static getMovieGenres(movieModel: MovieModel): string {
+      return movieModel.movieGenres?.map(x => x.genre.name).join(', ') || '';
+    }
+
+    public  static  getDefaultMovie() : MovieModel {
+      return {
+        movieId: -1,
+        internalId: "unknown",
+        corporateId: "unknown",
+        directorId: 0,
+        title: "Unknown",
+        originalTitle: "Unknown",
+        description: "No description available.",
+        shortDescription: "Short description unavailable.",
+        poster: "https://via.placeholder.com/150",
+        startDate: "1900-01-01",
+        shortUrl: "https://example.com",
+        runTime: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: null,
+        director: {directorId: -1,
+                   name: '',
+                   createdAt: ''
+                   },
+        movieActors: [],
+        movieGenres: []
+      };
+
+    }
+
 }

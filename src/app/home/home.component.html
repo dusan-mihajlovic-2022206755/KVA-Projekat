@@ -13,22 +13,25 @@
         <img mat-card-image [src]="projection.movie.poster" [alt]="projection.movie.poster">
         <mat-card-content>
             <h1>{{projection.movie.title}}</h1>
-            <p>Žanr: {{getMovieGenres(projection.movie)}}</p>
+            <p>Žanr: {{MovieService.getMovieGenres(projection.movie)}}</p>
             <p>Počinje u: {{utils.formatDate(projection.movie.startDate)}}</p>
             <p>Datum izlaska: {{utils.formatDate(projection.movie.createdAt)}}</p>
             <p>Opis: {{projection.movie.shortDescription}}</p>
-            <p>Uloge: {{ getMovieActors(projection.movie)}}</p>
+            <p>Uloge: {{ MovieService.getMovieActors(projection.movie)}}</p>
             <h3>Cena: {{projection.price}}</h3>
         </mat-card-content>
         <mat-card-actions>
-            <a mat-button [routerLink]="['/details/', projection.movie.movieId]">
+            <a mat-button [routerLink]="['/details', projection.movie.movieId]">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Details
             </a>
             <a mat-button [routerLink]="['/details/'+projection.movie.movieId+'/order']">
                 <i class="fa-solid fa-cart-shopping"></i> Book Now
             </a>
+          <a mat-button routerLink="/details/1">Click me</a>">
+
         </mat-card-actions>
+
     </mat-card>
 </div>
 
-<app-loading *ngIf="!movies && !error" />
+<app-loading *ngIf="!projections && !error" />

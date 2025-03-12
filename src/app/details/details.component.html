@@ -1,29 +1,40 @@
-<div class="wrapper" *ngIf="flight">
-    <h1>{{flight.destination}}</h1>
+<div class="wrapper" *ngIf="projection">
+    <h1>{{projection.movie.title}}</h1>
     <div class="flight-content">
-        <img [src]="utils.generateDestinationImage(flight.destination)" [alt]="flight.destination">
+        <img [src]="projection.movie.poster" [alt]="projection.movie.poster">
         <mat-card class="flight-card" appearance="outlined">
             <mat-card-content>
-                <h3>Flight Details</h3>
                 <mat-list role="list">
-                    <mat-list-item>Scheduled At: {{utils.formatDate(flight.scheduledAt)}}</mat-list-item>
-                    <mat-list-item>Flight Number: {{flight.flightNumber}}</mat-list-item>
-                    <mat-list-item>Airplane Model: {{flight.plane}}</mat-list-item>
-                    <mat-list-item>Flight Type: {{flight.type.name}}</mat-list-item>
+
+                  <h1>{{projection.movie.title}}</h1>
+                  <p>Žanr: {{MovieService.getMovieGenres(projection.movie)}}</p>
+                  <p>Počinje u: {{utils.formatDate(projection.movie.startDate)}}</p>
+                  <p>Datum izlaska: {{utils.formatDate(projection.movie.createdAt)}}</p>
+                  <p>Opis: {{projection.movie.shortDescription}}</p>
+                  <p>Uloge: {{ MovieService.getMovieActors(projection.movie)}}</p>
+                  <h3>Cena: {{projection.price}}</h3>
+
+
+<!--                    <mat-list-item>Žanr: {{MovieService.getMovieGenres(projection.movie)}}</mat-list-item>-->
+<!--                    <mat-list-item>Počinje u: {{utils.formatDate(projection.movie.startDate)}}</mat-list-item>-->
+<!--                    <mat-list-item>Datum izlaska: {{utils.formatDate(projection.movie.createdAt)}}</mat-list-item>-->
+<!--                    <mat-list-item>Opis: {{projection.movie.description}}</mat-list-item>-->
+<!--                    <mat-list-item>Uloge: {{ MovieService.getMovieActors(projection.movie)}}</mat-list-item>-->
+<!--                    <mat-list-item>Cena: {{projection.price}}</mat-list-item>-->
                 </mat-list>
             </mat-card-content>
-            <mat-card-actions>
-                <a mat-button [routerLink]="['/details/'+flight.id+'/order']">
-                    <i class="fa-solid fa-cart-shopping"></i> Book Now
-                </a>
-            </mat-card-actions>
+
+          <mat-card-actions>
+            <a mat-button [routerLink]="['/details/', projection.movie.movieId]">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Details
+            </a>
+            <a mat-button [routerLink]="['/details/'+projection.movie.movieId+'/order']">
+              <i class="fa-solid fa-cart-shopping"></i> Book Now
+            </a>
+          </mat-card-actions>
         </mat-card>
     </div>
-    <div class="flight-content">
-        <mat-card class="flight-map">
-            <iframe [src]="generateMapLink() | safe" width="860" height="600"></iframe>
-        </mat-card>
-    </div>
+
 </div>
 
-<app-loading *ngIf="!flight" />
+<app-loading *ngIf="!projection" />
