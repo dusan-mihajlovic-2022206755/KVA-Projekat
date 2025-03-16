@@ -1,7 +1,6 @@
-/*
+
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FlightModel } from '../../models/flight.model';
 import { MovieService } from '../../services/movieService';
 import { UtilsService } from '../../services/utils.service';
 import { MatCardModule } from '@angular/material/card';
@@ -9,11 +8,11 @@ import { NgFor, NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { AirlineModel } from '../../models/airline.model';
-import { AirlineService } from '../../services/airline.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
+import {MovieModel} from '../../models/movie.model';
+import {Projection} from '../../models/projection.model';
 
 @Component({
   selector: 'app-order',
@@ -22,9 +21,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './order.component.css'
 })
 export class OrderComponent {
-  public flight: FlightModel | null = null
-  public airlines: AirlineModel[] = AirlineService.getAirlines()
-  public selectedAirline: number = this.airlines[0].id
+  public projection: Projection | null = null;
+  //public movies: MovieModel[] = []
   public selectedTicketCount: number = 1
   public selectedPrice: number = 150
 
@@ -32,25 +30,46 @@ export class OrderComponent {
     route.params.subscribe(params => {
       MovieService.getMovieById(params['id'])
         .then(rsp => {
-          this.flight = rsp.data
+          let movie = rsp.data;
+          this.projection = {
+            id: movie.movieId, //staviti guid?
+            movie: movie,
+            reviews: [],
+            averageRating: 0 || 0,
+            price: 0
+          }
+          this.projection!.movie = rsp.data;
         })
     })
   }
 
   public doOrder() {
-    const result = UserService.createOrder({
-      id: new Date().getTime(),
-      flightId: this.flight!.id,
-      flightNumber: this.flight!.flightNumber,
-      destination: this.flight!.destination,
-      airline: AirlineService.getAirlineById(this.selectedAirline)!,
-      count: this.selectedTicketCount,
-      pricePerItem: this.selectedPrice,
-      status: 'ordered',
-      rating: null
-    })
+        const result = UserService.createOrder({
+          id: this.projection!.id,
+          movieId: this.projection!.movie.movieId,
+          count: this.selectedTicketCount,
+          pricePerItem: this.selectedPrice,
+          status: 'rezervisano',
+          rating: null
+        })
 
-    result ? this.router.navigate(['/user']) : alert('An error occured while creating an order')
+        result ? this.router.navigate(['/user']) : alert('An error occured while creating an order')
+
+    //   MovieService.getMovieById(this.selectedMovie).then(rsp => {
+  //     const result = UserService.createOrder({
+  //       id: this.selectedMovie,
+  //       movieId: this.selectedMovie,
+  //       reservationNumber: this.selectedMovie,
+  //       movie: this.movies.find(x => x.movieId === this.selectedMovie)!,
+  //       count: this.selectedTicketCount,
+  //       pricePerItem: this.selectedPrice,
+  //       status: 'ordered',
+  //       rating: null
+  //     })
+  //
+  //     result ? this.router.navigate(['/user']) : alert('An error occured while creating an order')
+  //   })
+  //
+  //
   }
 }
-*/

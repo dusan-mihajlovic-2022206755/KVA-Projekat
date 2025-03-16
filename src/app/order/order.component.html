@@ -1,37 +1,40 @@
-<div *ngIf="flight">
+<div *ngIf="projection">
     <mat-card class="order-card" appearance="outlined">
-        <img mat-card-image [src]="utils.generateDestinationImage(flight.destination)" [alt]="flight.destination">
+        <img mat-card-image [src]="projection.movie.poster" [alt]="projection.movie.poster">
         <mat-card-content>
-            <h3>New Order - {{flight.destination}}</h3>
+            <h3>Nova rezervacija - {{projection.movie.originalTitle}}</h3>
             <mat-form-field class="full-width">
                 <mat-label>Destination</mat-label>
-                <input type="text" matInput [value]="flight.destination" disabled>
+                <input type="text" matInput [value]="projection.movie" disabled>
             </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Flight Number</mat-label>
-                <input type="text" matInput [value]="flight.flightNumber" disabled>
-            </mat-form-field>
+          <mat-card-subtitle>
+            {{ projection.movie.description }}
+          </mat-card-subtitle>
+<!--            <mat-form-field class="full-width">-->
+<!--                <mat-label>Flight Number</mat-label>-->
+<!--                <input type="text" matInput [value]="projection.movie.description" disabled>-->
+<!--            </mat-form-field>-->
             <mat-form-field class="full-width">
                 <mat-label>Scheduled At:</mat-label>
-                <input type="text" matInput [value]="utils.formatDate(flight.scheduledAt)" disabled>
+                <input type="text" matInput [value]="utils.formatDate(projection.movie.createdAt)" disabled>
             </mat-form-field>
+<!--            <mat-form-field class="full-width">-->
+<!--                <mat-label>Airline</mat-label>-->
+<!--                <mat-select [(ngModel)]="selectedMovie">-->
+<!--                    <mat-option *ngFor="let movie of movies" [value]="movie.movieId">{{movie.title}}</mat-option>-->
+<!--                </mat-select>-->
+<!--            </mat-form-field>-->
             <mat-form-field class="full-width">
-                <mat-label>Airline</mat-label>
-                <mat-select [(ngModel)]="selectedAirline">
-                    <mat-option *ngFor="let airline of airlines" [value]="airline.id">{{airline.name}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Choose price</mat-label>
+                <mat-label>Izaberite mesto</mat-label>
                 <mat-select [(ngModel)]="selectedPrice">
-                    <mat-option [value]="150">Economy - 150&euro;</mat-option>
-                    <mat-option [value]="480">Buissines - 480&euro;</mat-option>
-                    <mat-option [value]="850">First Class - 850&euro;</mat-option>
+                  <mat-option [value]="1000">VIP loža - 1000 rsd</mat-option>
+                  <mat-option [value]="300">Prva tri reda&euro; - 300 rsd</mat-option>
+                  <mat-option [value]="150">Ostali redovi - 150 rsd</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field class="full-width">
                 <mat-label>Ticket Count</mat-label>
-                <input type="number" matInput [(ngModel)]="selectedTicketCount"> 
+                <input type="number" matInput [(ngModel)]="selectedTicketCount">
             </mat-form-field>
         </mat-card-content>
         <mat-card-actions>

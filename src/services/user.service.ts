@@ -8,11 +8,11 @@ export class UserService {
             const arr: UserModel[] = [
                 {
                     email: 'user@example.com',
-                    firstName: 'Example',
-                    lastName: 'User',
+                    firstName: 'Jovan',
+                    lastName: 'Jovanović',
                     phone: '+3816123456789',
-                    address: 'Mokroluska 14, Vozdovac',
-                    favouriteDestination: 'Banja Luka',
+                    address: 'Majke Jevrosime',
+                    favouriteGenre: 'Comedy',
                     password: 'user123',
                     orders: []
                 }

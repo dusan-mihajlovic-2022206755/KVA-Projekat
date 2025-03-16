@@ -35,6 +35,10 @@ export class MovieService {
     static async getDestinations() {
         return client.get('/movie/movieActors')
     }
+  static async getAllGenres() {
+    return client.get('/genre')
+  }
+
     public static getMovieActors(movieModel: MovieModel): string {
       return movieModel.movieActors?.map(x => x.actor.name).join(', ') || '';
     }

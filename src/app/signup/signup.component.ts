@@ -9,6 +9,7 @@ import { MovieService } from '../../services/movieService';
 import { MatSelectModule } from '@angular/material/select';
 import { NgFor } from '@angular/common';
 import { UserService } from '../../services/user.service';
+import {Genre} from '../../models/movie.model';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,7 @@ import { UserService } from '../../services/user.service';
 })
 export class SignupComponent {
 
-  public destinationList: string[] = []
+  public genreList: Genre[] = []
   public email = ''
   public password = ''
   public repeatPassword = ''
@@ -29,18 +30,18 @@ export class SignupComponent {
   public destination = ''
 
   public constructor(private router: Router) {
-    MovieService.getDestinations()
-      .then(rsp => this.destinationList = rsp.data)
+    MovieService.getAllGenres()
+      .then(rsp => this.genreList = rsp.data)
   }
 
   public doSignup() {
     if (this.email == '' || this.password == '') {
-      alert('Email and password are required fields')
+      alert('Email i lozinka su obavezna polja!')
       return
     }
 
     if (this.password !== this.repeatPassword) {
-      alert('Passwords dont match')
+      alert('Lozinke se ne poklapaju!')
       return
     }
 
@@ -51,10 +52,10 @@ export class SignupComponent {
       lastName: this.lastName,
       phone: this.phone,
       address: this.address,
-      favouriteDestination: this.destination,
+      favouriteGenre: this.destination,
       orders: []
     })
 
-    result ? this.router.navigate(['/login']) : alert('Email is already taken')
+    result ? this.router.navigate(['/login']) : alert('Nalog sa ovom email adresom već postoji!')
   }
 }
