@@ -1,4 +1,5 @@
 <div class="wrapper" *ngIf="user">
+
   <mat-card class="user-card" appearance="outlined">
     <mat-card-header>
       <img mat-card-avatar class="example-header-image" [src]="'https://ui-avatars.com/api/?name='+user.email">
@@ -8,11 +9,70 @@
         <p class="no-border">Žanr: {{ user.favouriteGenre }}</p>
       </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-actions>
-      <button mat-button (click)="doChangePassword()">
-        <i class="fa-solid fa-key"></i> Promenite lozinku
-      </button>
-    </mat-card-actions>
+    <mat-card-content class="user-card-content">
+      <mat-accordion multi>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <i class="fa-solid fa-key"></i>&nbsp;Promenite lozinku
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-form-field class="full-width">
+            <mat-label>Old password</mat-label>
+            <input matInput type="password" [(ngModel)]="oldPasswordValue" />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>New password</mat-label>
+            <input matInput type="password" [(ngModel)]="newPasswordValue" />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Repeat password</mat-label>
+            <input matInput type="password" [(ngModel)]="repeatPasswordValue" />
+          </mat-form-field>
+          <button mat-button (click)="doChangePassword()">
+            <i class="fa-solid fa-paper-plane"></i> Potvrdi
+          </button>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="userCopy">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <i class="fa-solid fa-user-tag"></i>&nbsp;Izmenite profil korisnika
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="userCopy.email" disabled/>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Ime</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.firstName" />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Prezime</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.lastName" />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Telefon</mat-label>
+            <input matInput type="tel" [(ngModel)]="userCopy.phone" />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Adresa</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.address" />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Omiljeni žanr</mat-label>
+            <mat-select [(ngModel)]="userCopy.favouriteGenre">
+              <mat-option *ngFor="let genre of genreList" [value]="genre.genreId">
+                {{genre.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-button (click)="doUpdateUser()">
+            <i class="fa-solid fa-paper-plane"></i> Update
+          </button>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
   </mat-card>
 
   <mat-card appearance="outlined" *ngIf="user.orders.length == 0" class="no-order">
@@ -23,85 +83,118 @@
   </mat-card>
 
   <div *ngIf="user.orders.length > 0">
-    <h1>Lista rezervacija</h1>
-    <table mat-table [dataSource]="user.orders" class="mat-elevation-z8">
+    <div *ngIf="user.orders">
+      <h1>Lista rezervacija</h1>
+      <table mat-table [dataSource]="user.orders" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>
-          <i class="fa-solid fa-hashtag"></i> ID
-        </th>
-        <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
-      </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-solid fa-hashtag"></i> ID
+          </th>
+          <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="movieId">
-        <th mat-header-cell *matHeaderCellDef>
-          <i class="fa-solid fa-film"></i> Movie ID
-        </th>
-        <td mat-cell *matCellDef="let element"> {{ element.movieId }} </td>
-      </ng-container>
+        <ng-container matColumnDef="movieId">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-solid fa-film"></i> Movie ID
+          </th>
+          <td mat-cell *matCellDef="let element"> {{ element.movieId }} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="count">
-        <th mat-header-cell *matHeaderCellDef>
-          <i class="fa-solid fa-arrow-up-wide-short"></i> Count
-        </th>
-        <td mat-cell *matCellDef="let element"> {{ element.count }} </td>
-      </ng-container>
+        <ng-container matColumnDef="count">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-solid fa-arrow-up-wide-short"></i> Broj kupljenih karata
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.count}}
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="pricePerItem">
-        <th mat-header-cell *matHeaderCellDef>
-          <i class="fa-solid fa-tag"></i> Price Per Ticket
-        </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.pricePerItem }} <i class="fa-solid fa-euro-sign"></i>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="pricePerItem">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-solid fa-tag"></i> Cena po karti
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.pricePerItem}} RSD
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>
-          <i class="fa-regular fa-chart-bar"></i> Status
-        </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.status.toUpperCase() }}
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-solid fa-hand-holding-dollar"></i> Total
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.pricePerItem*element.count}} RSD
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="rating">
-        <th mat-header-cell *matHeaderCellDef>
-          <i class="fa-solid fa-star"></i> Rating
-        </th>
-        <td mat-cell *matCellDef="let element">
-          <div *ngIf="element.rating === null">NO RATING</div>
-          <div *ngIf="element.rating === true">LIKED</div>
-          <div *ngIf="element.rating === false">DISLIKED</div>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-regular fa-chart-bar"></i> Status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.status == 'gledano' && element.rating == null">
+              Gledano
+            </div>
+            <div *ngIf="element.status == 'gledano' && element.rating == true">
+              Sviđa mi se
+            </div>
+            <div *ngIf="element.status == 'gledano' && element.rating == false">
+              Ne sviđa mi se
+            </div>
+            <div *ngIf="element.status == 'gledano' || element.status == 'otkazano'">
+              {{element.status.toUpperCase()}}
+            </div>
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>
-          <i class="fa-solid fa-location-arrow"></i> Actions
-        </th>
-        <td mat-cell *matCellDef="let element" class="actions">
-          <a mat-button [routerLink]="['/details/', element.movieId]">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Details
-          </a>
-          <div *ngIf="element.status === 'rezervisano'">
-            <button type="button" mat-button (click)="doCancel(element)">
-              <i class="fa-solid fa-ban"></i> Cancel
-            </button>
-          </div>
-          <div *ngIf="element.status === 'gledano' && element.rating === null">
-            <button type="button" mat-button (click)="doRating(element, true)">
-              <i class="fa-solid fa-thumbs-up"></i> Like
-            </button>
-            <button type="button" mat-button (click)="doRating(element, false)">
-              <i class="fa-solid fa-thumbs-down"></i> Dislike
-            </button>
-          </div>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="rating">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-solid fa-star"></i> Ocena
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.rating == null">
+              Neocenjeno
+            </div>
+            <div *ngIf="element.rating == true">
+              Sviđa mi se
+            </div>
+            <div *ngIf="element.rating == false">
+              Ne sviđa mi se
+            </div>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>
+            <i class="fa-solid fa-location-arrow"></i> Akcije
+          </th>
+          <td mat-cell *matCellDef="let element" class="actions">
+            <a mat-button [routerLink]="['/details/', element.movieId]">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Detalji
+            </a>
+            <div *ngIf="element.status == 'rezervisano'">
+              <button type="button" mat-button (click)="doPay(element)">
+                <i class="fa-solid fa-eye"></i> Odgledao/la sam
+              </button>
+              <button type="button" mat-button (click)="doCancel(element)">
+                <i class="fa-solid fa-ban"></i> Cancel
+              </button>
+            </div>
+            <div *ngIf="element.status == 'gledano' && element.rating == null">
+              <button type="button" mat-button (click)="doRating(element, true)">
+                <i class="fa-solid fa-thumbs-up"></i> Sviđa mi se
+              </button>
+              <button type="button" mat-button (click)="doRating(element, false)">
+                <i class="fa-solid fa-thumbs-down"></i> Ne sviđa mi se
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
   </div>
 </div>

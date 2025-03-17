@@ -11,8 +11,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
-import {MovieModel} from '../../models/movie.model';
 import {Projection} from '../../models/projection.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-order',
@@ -35,7 +35,7 @@ export class OrderComponent {
             id: movie.movieId, //staviti guid?
             movie: movie,
             reviews: [],
-            averageRating: 0 || 0,
+            status: 'slobodno',
             price: 0
           }
           this.projection!.movie = rsp.data;
@@ -44,6 +44,19 @@ export class OrderComponent {
   }
 
   public doOrder() {
+    Swal.fire({
+      title: `Rezeviši projekciju ${this.projection!.movie.title} filma?`,
+      text: "Rezervacije mogu biti otkazane u svakom trenutku!",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        popup: 'bg-dark'
+      },
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Rezerviši!"
+    }).then((result) => {
+      if (result.isConfirmed) {
         const result = UserService.createOrder({
           id: this.projection!.id,
           movieId: this.projection!.movie.movieId,
@@ -52,24 +65,13 @@ export class OrderComponent {
           status: 'rezervisano',
           rating: null
         })
-
-        result ? this.router.navigate(['/user']) : alert('An error occured while creating an order')
-
-    //   MovieService.getMovieById(this.selectedMovie).then(rsp => {
-  //     const result = UserService.createOrder({
-  //       id: this.selectedMovie,
-  //       movieId: this.selectedMovie,
-  //       reservationNumber: this.selectedMovie,
-  //       movie: this.movies.find(x => x.movieId === this.selectedMovie)!,
-  //       count: this.selectedTicketCount,
-  //       pricePerItem: this.selectedPrice,
-  //       status: 'ordered',
-  //       rating: null
-  //     })
-  //
-  //     result ? this.router.navigate(['/user']) : alert('An error occured while creating an order')
-  //   })
-  //
-  //
+        result ? this.router.navigate(['/user']) :
+          Swal.fire({
+            title: "Neuspešna rezervacija!",
+            text: "Nešto nije u redu sa Vašom rezervacijom!",
+            icon: "error"
+          });
+      }
+    })
   }
 }

@@ -32,13 +32,12 @@ export class DetailsComponent {
       console.log("Route Params:", params); // Debugging
       MovieService.getMovieById(params['id'])
         .then(rsp => {
-          console.log("Movie Data:", rsp.data);
           this.movie = rsp.data;
         })
         .then(() => {
           this.projection = {
             id: this.movie?.movieId || -1,
-            averageRating: 0,
+            status: 'slobodno',
             movie: this.movie ?? MovieService.getDefaultMovie(),
             price: 0,
             reviews: []

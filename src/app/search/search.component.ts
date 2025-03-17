@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
-import { Actor, Director, Genre, MovieModel } from '../../models/movie.model';
+import { Genre, MovieModel } from '../../models/movie.model';
 import { MovieService } from '../../services/movieService';
 import { Projection } from '../../models/projection.model';
 import { AxiosError } from 'axios';
@@ -39,18 +39,21 @@ import { AxiosError } from 'axios';
 })
 export class SearchComponent {
   displayedColumns: string[] = ['poster', 'name', 'description', 'genre', 'actors', 'startsAt', 'createdAt', 'duration', 'price', 'rating', 'actions'];
-  allData: Projection[] = []; // ✅ Default to empty array
+  allData: Projection[] = [];
   genreList: Genre[] = [];
   runtimeList: number[] = [];
-  selectedGenre: string | null = null;
-  selectedRuntime: number | null = null;
 
   dataSource: Projection[] = [];
   userInput: string = '';
   startAtDateOptions: string[] = [];
   createdAtDateOptions: string[] = [];
+
+  selectedGenre: string | null = null;
+  selectedRuntime: number | null = null;
   selectedStartAtDate: string | null = null;
   selectedCreatedAtDate: string | null = null;
+  selectedStatus: string | null = null;
+  selectedPrice: number | null = null;
   movies: MovieModel[] = [];
 
   public error: string | null = null;
@@ -69,9 +72,9 @@ export class SearchComponent {
         this.movies = rsp.data;
         this.allData = this.movies.map((movie) => ({
           id: movie.movieId,
-          movie,
+          movie: movie,
           reviews: [],
-          averageRating: 0,
+          status: 'slobodno',
           price: 150,
         }));
         this.dataSource = [...this.allData];
@@ -104,6 +107,8 @@ export class SearchComponent {
     this.selectedGenre = null;
     this.selectedStartAtDate = null;
     this.selectedRuntime = null;
+    this.selectedStatus = null;
+    this.selectedPrice = null;
     this.dataSource = [...this.allData];
     this.generateSearchCriteria(this.dataSource);
   }
@@ -125,9 +130,17 @@ export class SearchComponent {
         return MovieService.getMovieGenres(obj.movie).includes(this.selectedGenre);
       })
       .filter((obj) => {
-      if (!this.selectedRuntime) return true;
-      return obj.movie.runTime === this.selectedRuntime;
-    })
+        if (!this.selectedRuntime) return true;
+        return obj.movie.runTime === this.selectedRuntime;
+      })
+      .filter((obj) => {
+        if (!this.selectedStatus) return true;
+        return obj.status === this.selectedStatus;
+      })
+      .filter((obj) => {
+        if (!this.selectedPrice) return true;
+        return obj.price === this.selectedPrice;
+      })
       .filter((obj) => {
         if (!this.selectedStartAtDate) return true;
         const start = new Date(`${this.selectedStartAtDate}T00:00:01`);

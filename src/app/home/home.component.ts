@@ -32,7 +32,7 @@ export class HomeComponent {
           id: movie.movieId, //staviti guid?
           movie: movie,
           reviews: [],
-          averageRating: 0 || 0,
+          status: 'slobodno',
           price: 0
         })) || []
       )

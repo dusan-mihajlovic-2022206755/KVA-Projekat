@@ -37,6 +37,20 @@ export class UserService {
         return true
     }
 
+    static updateUser(model: UserModel) {
+      const users = this.retrieveUsers()
+      for (let u of users) {
+        if (u.email === model.email) {
+          u.firstName = model.firstName
+          u.lastName = model.lastName
+          u.address = model.address
+          u.phone = model.phone
+          u.favouriteGenre = model.favouriteGenre
+        }
+      }
+
+      localStorage.setItem('users', JSON.stringify(users))
+    }
     static login(email: string, password: string): boolean {
         for (let user of this.retrieveUsers()) {
             if (user.email === email && user.password === password) {
@@ -74,7 +88,7 @@ export class UserService {
         return false
     }
 
-    static changeOrderStatus(state: 'rezervisano' | 'gledano' | 'otkazano', id: number) {
+    static changeOrderStatus(state: 'slobodno' | 'rezervisano' | 'gledano' | 'otkazano', id: number) {
         const active = this.getActiveUser()
         if (active) {
             const arr = this.retrieveUsers()
