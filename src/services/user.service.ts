@@ -7,13 +7,13 @@ export class UserService {
         if (!localStorage.getItem('users')) {
             const arr: UserModel[] = [
                 {
-                    email: 'user@example.com',
-                    firstName: 'Jovan',
-                    lastName: 'Jovanović',
+                    email: 'test@test.com',
+                    firstName: 'Dušan',
+                    lastName: 'Mihajlović',
                     phone: '+3816123456789',
                     address: 'Majke Jevrosime',
                     favouriteGenre: 'Comedy',
-                    password: 'user123',
+                    password: 'test',
                     orders: []
                 }
             ]
@@ -74,7 +74,7 @@ export class UserService {
         return false
     }
 
-    static changeOrderStatus(state: 'ordered' | 'paid' | 'canceled', id: number) {
+    static changeOrderStatus(state: 'rezervisano' | 'gledano' | 'otkazano', id: number) {
         const active = this.getActiveUser()
         if (active) {
             const arr = this.retrieveUsers()
@@ -100,7 +100,7 @@ export class UserService {
             for (let user of arr) {
                 if (user.email == active.email) {
                     for (let order of user.orders) {
-                        if (order.id == id && order.status == 'paid') {
+                        if (order.id == id && order.status == 'gledano') {
                             order.rating = r
                         }
                     }
