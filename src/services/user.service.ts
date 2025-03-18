@@ -12,7 +12,7 @@ export class UserService {
                     lastName: 'Mihajlović',
                     phone: '+3816123456789',
                     address: 'Majke Jevrosime',
-                    favouriteGenre: 'Comedy',
+                    favouriteGenre: 'Komedija',
                     password: 'test',
                     orders: []
                 }

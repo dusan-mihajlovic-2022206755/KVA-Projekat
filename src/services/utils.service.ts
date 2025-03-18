@@ -12,6 +12,10 @@ export class UtilsService {
     return new Date(iso).toLocaleString('sr-RS');
   }
 
+    public static convertToHoursAndMinutes(timeInMinutes: number) {
+    return Math.floor(timeInMinutes / 60) + "h "+timeInMinutes % 60 + "min"
+  }
+
   public openGreenSnackbar(text: string) {
     this.snackBar.open(text, 'Close', {
       duration: 3000,

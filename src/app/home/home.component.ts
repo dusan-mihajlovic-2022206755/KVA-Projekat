@@ -9,10 +9,11 @@ import {UtilsService} from '../../services/utils.service';
 import {LoadingComponent} from "../loading/loading.component";
 import {RouterLink} from '@angular/router';
 import {Projection} from '../../models/projection.model';
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'app-home',
-  imports: [NgIf, NgFor, MatButtonModule, MatCardModule, LoadingComponent, RouterLink],
+  imports: [NgIf, NgFor, MatListModule, MatButtonModule, MatCardModule, LoadingComponent, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -31,9 +32,10 @@ export class HomeComponent {
         this.projections = this.movies?.map(movie => ({
           id: movie.movieId, //staviti guid?
           movie: movie,
-          reviews: [],
+          averageRating: Math.round((Math.random() * (5 - 1) + 1) * 10) / 10,
           status: 'slobodno',
-          price: 0
+          price: 0,
+          reviews:[]
         })) || []
       )
       .catch((e: AxiosError) => {

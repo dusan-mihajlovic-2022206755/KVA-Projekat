@@ -4,7 +4,8 @@ import {Review} from './review.model';
 export interface Projection {
   id: number
   movie: MovieModel
-  reviews: Review[]
+  reviews: Review[] | []
+  averageRating: number
   status: string
   price: number
 }

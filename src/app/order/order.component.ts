@@ -34,9 +34,10 @@ export class OrderComponent {
           this.projection = {
             id: movie.movieId, //staviti guid?
             movie: movie,
-            reviews: [],
+            averageRating: Math.round((Math.random() * (5 - 1) + 1) * 10) / 10,
             status: 'slobodno',
-            price: 0
+            price: 0,
+            reviews:[]
           }
           this.projection!.movie = rsp.data;
         })
@@ -58,7 +59,7 @@ export class OrderComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         const result = UserService.createOrder({
-          id: this.projection!.id,
+          id: new Date().getTime(),
           movieId: this.projection!.movie.movieId,
           count: this.selectedTicketCount,
           pricePerItem: this.selectedPrice,
@@ -74,4 +75,6 @@ export class OrderComponent {
       }
     })
   }
+
+  protected readonly MovieService = MovieService;
 }

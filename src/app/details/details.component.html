@@ -1,40 +1,58 @@
 <div class="wrapper" *ngIf="projection">
-    <h1>{{projection.movie.title}}</h1>
-    <div class="flight-content">
-        <img [src]="projection.movie.poster" [alt]="projection.movie.poster">
-        <mat-card class="flight-card" appearance="outlined">
-            <mat-card-content>
-                <mat-list role="list">
+  <div class="movie-content">
+    <img [src]="projection.movie.poster" [alt]="projection.movie.poster">
+    <mat-card class="movie-card" appearance="outlined">
+      <mat-card-content>
+        <mat-list role="list">
+          <h1>{{ projection.movie.title }}</h1>
+          <h3>Žanr: {{ MovieService.getMovieGenres(projection.movie) }}</h3>
+          <p>Trajanje: {{ UtilsService.convertToHoursAndMinutes(projection.movie.runTime) }}</p>
+          <p>Počinje u: <span style="font-weight: bold">{{ utils.formatDate(projection.movie.createdAt) }}</span></p>
+          <p>Datum izlaska: {{ projection.movie.startDate | date:"dd.MM.yyyy" }}</p>
+          <p>{{ projection.movie.description }}</p>
+          <p>Uloge: {{ MovieService.getMovieActors(projection.movie) }}</p>
+          <i class="fa-solid fa-star"></i> <h3 style="display: inline"> {{ projection.averageRating | number:"1.1-1" }}</h3>
+        </mat-list>
 
-                  <h1>{{projection.movie.title}}</h1>
-                  <p>Žanr: {{MovieService.getMovieGenres(projection.movie)}}</p>
-                  <p>Počinje u: {{utils.formatDate(projection.movie.startDate)}}</p>
-                  <p>Datum izlaska: {{utils.formatDate(projection.movie.createdAt)}}</p>
-                  <p>Opis: {{projection.movie.shortDescription}}</p>
-                  <p>Uloge: {{ MovieService.getMovieActors(projection.movie)}}</p>
-                  <h3>Cena: {{projection.price}}</h3>
+        <mat-card class="reviews-card" appearance="outlined">
+          <mat-card-title>Recenzije</mat-card-title>
+          <mat-card-content class="reviews-content">
+            <div *ngIf="projection.reviews && projection.reviews.length > 0; else noReviews">
+              <mat-list>
+                <mat-list-item *ngFor="let review of projection.reviews" style="height: 100px">
 
-
-<!--                    <mat-list-item>Žanr: {{MovieService.getMovieGenres(projection.movie)}}</mat-list-item>-->
-<!--                    <mat-list-item>Počinje u: {{utils.formatDate(projection.movie.startDate)}}</mat-list-item>-->
-<!--                    <mat-list-item>Datum izlaska: {{utils.formatDate(projection.movie.createdAt)}}</mat-list-item>-->
-<!--                    <mat-list-item>Opis: {{projection.movie.description}}</mat-list-item>-->
-<!--                    <mat-list-item>Uloge: {{ MovieService.getMovieActors(projection.movie)}}</mat-list-item>-->
-<!--                    <mat-list-item>Cena: {{projection.price}}</mat-list-item>-->
-                </mat-list>
-            </mat-card-content>
-
-          <mat-card-actions>
-            <a mat-button [routerLink]="['/details/', projection.movie.movieId]">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Details
-            </a>
-            <a mat-button [routerLink]="['/details/'+projection.movie.movieId+'/order']">
-              <i class="fa-solid fa-cart-shopping"></i> Book Now
-            </a>
-          </mat-card-actions>
+                  <div class="review-content">
+                    <div class="review-header">
+                      <mat-icon matListIcon>person</mat-icon>
+                      <span class="username">{{ review.username }}</span>
+                      <span class="rating">
+                        <i class="fa-solid fa-star"></i>
+                        {{ review.rating }}/5
+                      </span>
+                    </div>
+                    <p class="review-text">{{ review.reviewText }}</p>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </div>
+            <ng-template #noReviews>
+              <p mat-body-text style="text-align: center; color: gray;">Nema dostupnih recenzija</p>
+            </ng-template>
+          </mat-card-content>
         </mat-card>
-    </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button [routerLink]="['/details/', projection.movie.movieId]">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Detalji
+        </a>
+        <a mat-button [routerLink]="['/details/'+projection.movie.movieId+'/order']">
+          <i class="fa-solid fa-cart-shopping"></i> Rezerviši
+        </a>
+      </mat-card-actions>
+    </mat-card>
 
+
+  </div>
 </div>
 
-<app-loading *ngIf="!projection" />
+<app-loading *ngIf="!projection"/>
