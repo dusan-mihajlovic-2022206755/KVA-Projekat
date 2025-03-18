@@ -19,7 +19,7 @@ export class UtilsService {
   public openGreenSnackbar(text: string) {
     this.snackBar.open(text, 'Close', {
       duration: 3000,
-      panelClass: ['green-snackbar']  // Custom class for green background
+      panelClass: ['green-snackbar']
     });
   }
 

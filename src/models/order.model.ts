@@ -4,5 +4,6 @@ export interface OrderModel {
     count: number
     pricePerItem: number
     status: 'slobodno' | 'rezervisano' | 'gledano' | 'otkazano',
-    rating: null | boolean
+    rating: number | null,
+    title: string | null
 }

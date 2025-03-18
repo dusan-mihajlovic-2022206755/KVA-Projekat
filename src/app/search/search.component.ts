@@ -30,7 +30,6 @@ import {AxiosError} from 'axios';
     FormsModule,
     MatCardModule,
     MatSelectModule,
-    CurrencyPipe,
     DecimalPipe,
     DatePipe,
   ],

@@ -16,13 +16,12 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-order',
-  imports: [MatCardModule, NgIf, NgFor, MatInputModule, MatButtonModule, MatSelectModule, MatFormFieldModule, FormsModule],
+  imports: [MatCardModule, NgIf, MatInputModule, MatButtonModule, MatSelectModule, MatFormFieldModule, FormsModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css'
 })
 export class OrderComponent {
   public projection: Projection | null = null;
-  //public movies: MovieModel[] = []
   public selectedTicketCount: number = 1
   public selectedPrice: number = 150
 
@@ -64,7 +63,8 @@ export class OrderComponent {
           count: this.selectedTicketCount,
           pricePerItem: this.selectedPrice,
           status: 'rezervisano',
-          rating: null
+          rating: null,
+          title: this.projection!.movie.title
         })
         result ? this.router.navigate(['/user']) :
           Swal.fire({

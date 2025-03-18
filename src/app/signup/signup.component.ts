@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgFor } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import {Genre} from '../../models/movie.model';
+import {UtilsService} from '../../services/utils.service';
 
 @Component({
   selector: 'app-signup',
@@ -29,20 +30,60 @@ export class SignupComponent {
   public address = ''
   public destination = ''
 
-  public constructor(private router: Router) {
+  public constructor(private router: Router, private utils: UtilsService) {
     MovieService.getAllGenres()
       .then(rsp => this.genreList = rsp.data)
   }
 
   public doSignup() {
-    if (this.email == '' || this.password == '') {
-      alert('Email i lozinka su obavezna polja!')
-      return
+    // Basic required field validation
+    if (!this.email.trim() || !this.password.trim()) {
+      this.utils.openRedSnackbar('Email i lozinka su obavezna polja!');
+      return;
     }
 
+    if (!this.firstName.trim()) {
+      this.utils.openRedSnackbar('Ime je obavezno!');
+      return;
+    }
+
+    if (!this.lastName.trim()) {
+      this.utils.openRedSnackbar('Prezime je obavezno!');
+      return;
+    }
+
+    if (!this.phone.trim()) {
+      this.utils.openRedSnackbar('Telefon je obavezan!');
+      return;
+    }
+
+    if (!this.address.trim()) {
+      this.utils.openRedSnackbar('Adresa je obavezna!');
+      return;
+    }
+
+    if (!this.destination.trim()) {
+      this.utils.openRedSnackbar('Omiljeni žanr je obavezan!');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+      this.utils.openRedSnackbar('Unesite validnu email adresu!');
+      return;
+    }
+
+    // Password length validation
+    if (this.password.length < 6) {
+      this.utils.openRedSnackbar('Lozinka mora imati najmanje 6 karaktera!');
+      return;
+    }
+
+    // Password match validation
     if (this.password !== this.repeatPassword) {
-      alert('Lozinke se ne poklapaju!')
-      return
+      this.utils.openRedSnackbar('Lozinke se ne poklapaju!');
+      return;
     }
 
     const result = UserService.createUser({
@@ -54,8 +95,14 @@ export class SignupComponent {
       address: this.address,
       favouriteGenre: this.destination,
       orders: []
-    })
+    });
 
-    result ? this.router.navigate(['/login']) : alert('Nalog sa ovom email adresom već postoji!')
+    if (result) {
+      this.utils.openGreenSnackbar('Registracija uspešna!');
+      this.router.navigate(['/login']);
+    } else {
+      this.utils.openRedSnackbar('Nalog sa ovom email adresom već postoji!');
+    }
   }
+
 }

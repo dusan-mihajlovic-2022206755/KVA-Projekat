@@ -94,11 +94,11 @@
           <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
         </ng-container>
 
-        <ng-container matColumnDef="movieId">
+        <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef>
-            <i class="fa-solid fa-film"></i> Movie ID
+            <i class="fa-solid fa-film"></i> Naslov
           </th>
-          <td mat-cell *matCellDef="let element"> {{ element.movieId }} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
         </ng-container>
 
         <ng-container matColumnDef="count">
@@ -147,14 +147,12 @@
             <div *ngIf="element.rating == null">
               Neocenjeno
             </div>
-            <div *ngIf="element.rating == true">
-              Sviđa mi se
-            </div>
-            <div *ngIf="element.rating == false">
-              Ne sviđa mi se
+            <div *ngIf="element.rating != null">
+              {{ element.rating | number:'1.1-1' }}
             </div>
           </td>
         </ng-container>
+
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>
@@ -173,11 +171,20 @@
               </button>
             </div>
             <div *ngIf="element.status == 'gledano' && element.rating == null">
-              <button type="button" mat-button (click)="doRating(element, true)">
-                <i class="fa-solid fa-thumbs-up"></i> Sviđa mi se
+              <button mat-icon-button (click)="doRating(element, 1)">
+                <mat-icon>star_border</mat-icon>
               </button>
-              <button type="button" mat-button (click)="doRating(element, false)">
-                <i class="fa-solid fa-thumbs-down"></i> Ne sviđa mi se
+              <button mat-icon-button (click)="doRating(element, 2)">
+                <mat-icon>star_border</mat-icon>
+              </button>
+              <button mat-icon-button (click)="doRating(element, 3)">
+                <mat-icon>star_border</mat-icon>
+              </button>
+              <button mat-icon-button (click)="doRating(element, 4)">
+                <mat-icon>star_border</mat-icon>
+              </button>
+              <button mat-icon-button (click)="doRating(element, 5)">
+                <mat-icon>star_border</mat-icon>
               </button>
             </div>
           </td>

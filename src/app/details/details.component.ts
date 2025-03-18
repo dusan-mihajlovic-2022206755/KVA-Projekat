@@ -17,7 +17,7 @@ import {Review} from '../../models/review.model';
 
 @Component({
   selector: 'app-details',
-  imports: [NgIf, CommonModule, MatIcon, LoadingComponent, MatCardModule, MatListModule, MatButtonModule, SafePipe, RouterLink, DatePipe],
+  imports: [NgIf, CommonModule, MatIcon, LoadingComponent, MatCardModule, MatListModule, MatButtonModule, RouterLink, DatePipe],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
