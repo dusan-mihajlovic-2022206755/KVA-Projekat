@@ -6,7 +6,32 @@
         </mat-card-content>
     </mat-card>
 </div>
+<div *ngIf="favouriteGenreProjections" class="container flex">
+<!--  <mat-card-title>Filmovi za omiljeni žanr:</mat-card-title>-->
+  <mat-card class="example-card" appearance="raised" *ngFor="let projection of favouriteGenreProjections">
+    <img mat-card-image [src]="projection.movie.poster" [alt]="projection.movie.poster">
+    <mat-card-content>
+      <h1>{{projection.movie.title}}</h1>
+      <p>Žanr: {{MovieService.getMovieGenres(projection.movie)}}</p>
+      <p>Počinje u: {{utils.formatDate(projection.movie.createdAt)}}</p>
+      <p>Datum izlaska: {{projection.movie.startDate | date: "dd.MM.yyyy"}}</p>
+      <p>Opis: {{projection.movie.shortDescription}}</p>
+      <p>Uloge: {{ MovieService.getMovieActors(projection.movie)}}</p>
+      <i class="fa-solid fa-star"></i> <h3 style="display: inline"> {{projection.averageRating}}</h3>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button [routerLink]="['/details', projection.movie.movieId]">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Detalji
+      </a>
+      <a mat-button [routerLink]="['/details/'+projection.movie.movieId+'/order']">
+        <i class="fa-solid fa-cart-shopping"></i> Rezerviši
+      </a>
 
+    </mat-card-actions>
+
+  </mat-card>
+  <mat-divider></mat-divider>
+</div>
 <div *ngIf="projections" class="container flex">
     <mat-card class="example-card" appearance="outlined" *ngFor="let projection of projections">
 
@@ -15,7 +40,7 @@
             <h1>{{projection.movie.title}}</h1>
             <p>Žanr: {{MovieService.getMovieGenres(projection.movie)}}</p>
             <p>Počinje u: {{utils.formatDate(projection.movie.createdAt)}}</p>
-            <p>Datum izlaska: {{utils.formatDate(projection.movie.startDate)}}</p>
+            <p>Datum izlaska: {{projection.movie.startDate| date: "dd.MM.yyyy"}}</p>
             <p>Opis: {{projection.movie.shortDescription}}</p>
             <p>Uloge: {{ MovieService.getMovieActors(projection.movie)}}</p>
           <i class="fa-solid fa-star"></i> <h3 style="display: inline"> {{projection.averageRating}}</h3>

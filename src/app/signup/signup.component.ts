@@ -28,7 +28,7 @@ export class SignupComponent {
   public lastName = ''
   public phone = ''
   public address = ''
-  public destination = ''
+  public favouriteGenre = ''
 
   public constructor(private router: Router, private utils: UtilsService) {
     MovieService.getAllGenres()
@@ -61,7 +61,7 @@ export class SignupComponent {
       return;
     }
 
-    if (!this.destination.trim()) {
+    if (!this.favouriteGenre.trim()) {
       this.utils.openRedSnackbar('Omiljeni žanr je obavezan!');
       return;
     }
@@ -78,7 +78,7 @@ export class SignupComponent {
       lastName: this.lastName,
       phone: this.phone,
       address: this.address,
-      favouriteGenre: this.destination,
+      favouriteGenre: this.favouriteGenre,
       orders: []
     });
 
