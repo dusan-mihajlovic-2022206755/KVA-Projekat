@@ -4,7 +4,7 @@
   <mat-card class="search-card">
     <mat-card-content>
       <mat-form-field class="search-input">
-        <mat-label>Pretraga</mat-label>
+        <mat-label>Naziv/opis</mat-label>
         <input
           type="text"
           matInput
@@ -22,7 +22,22 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-
+      <mat-form-field class="search-input">
+        <mat-label>Režiser</mat-label>
+        <mat-select (selectionChange)="doFilterChain()" [(ngModel)]="selectedDirector">
+          <mat-option *ngFor="let director of directorList" [value]="director.directorId">
+            {{ director.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="search-input">
+        <mat-label>Glumac</mat-label>
+        <mat-select (selectionChange)="doFilterChain()" [(ngModel)]="selectedActor">
+          <mat-option *ngFor="let actor of actorList" [value]="actor.actorId">
+            {{ actor.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-form-field class="search-input">
         <mat-label>Trajanje</mat-label>
         <mat-select (selectionChange)="doFilterChain()" [(ngModel)]="selectedRuntime">
@@ -108,7 +123,6 @@
         {{ getActorsAndDirector(element.movie) }}
       </td>
     </ng-container>
-
 
     <ng-container matColumnDef="startsAt">
       <th mat-header-cell *matHeaderCellDef> Godina objavljivanja</th>

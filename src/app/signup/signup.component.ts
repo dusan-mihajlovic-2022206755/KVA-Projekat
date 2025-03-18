@@ -36,7 +36,6 @@ export class SignupComponent {
   }
 
   public doSignup() {
-    // Basic required field validation
     if (!this.email.trim() || !this.password.trim()) {
       this.utils.openRedSnackbar('Email i lozinka su obavezna polja!');
       return;
@@ -67,20 +66,6 @@ export class SignupComponent {
       return;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.email)) {
-      this.utils.openRedSnackbar('Unesite validnu email adresu!');
-      return;
-    }
-
-    // Password length validation
-    if (this.password.length < 6) {
-      this.utils.openRedSnackbar('Lozinka mora imati najmanje 6 karaktera!');
-      return;
-    }
-
-    // Password match validation
     if (this.password !== this.repeatPassword) {
       this.utils.openRedSnackbar('Lozinke se ne poklapaju!');
       return;

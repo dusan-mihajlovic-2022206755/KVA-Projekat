@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
-import {CurrencyPipe, DatePipe, DecimalPipe, NgFor, NgIf} from '@angular/common';
+import { DatePipe, DecimalPipe, NgFor, NgIf} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {UtilsService} from '../../services/utils.service';
 import {LoadingComponent} from '../loading/loading.component';
@@ -10,14 +10,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatSelectModule} from '@angular/material/select';
-import {Genre, MovieModel} from '../../models/movie.model';
+import {Actor, Director, Genre, MovieModel} from '../../models/movie.model';
 import {MovieService} from '../../services/movieService';
 import {Projection} from '../../models/projection.model';
 import {AxiosError} from 'axios';
 
 @Component({
   selector: 'app-search',
-  standalone: true, // ✅ Required for imports
   imports: [
     MatTableModule,
     NgIf,
@@ -34,16 +33,18 @@ import {AxiosError} from 'axios';
     DatePipe,
   ],
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'], // ✅ Fixed typo (`styleUrls`)
+  styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
-  displayedColumns: string[] = ['poster', 'name', 'description', 'genre', 'actors', 'startsAt', 'createdAt', 'duration', 'price', 'rating', 'actions'];
+  displayedColumns: string[] = ['poster', 'name', 'description', 'genre', 'actors','startsAt', 'createdAt', 'duration', 'price', 'rating', 'actions'];
   allData: Projection[] = [];
 
   genreList: Genre[] = [];
   runtimeList: number[] = [];
   priceList: number[] = [];
   ratingList: string[] = [];
+  actorList: Actor[] = [];
+  directorList: Director[] = [];
 
   dataSource: Projection[] = [];
   userInput: string = '';
@@ -57,6 +58,8 @@ export class SearchComponent {
   selectedStatus: string | null = null;
   selectedPrice: number | null = null;
   selectedRating: string | null = null;
+  selectedActor: number | null = null;
+  selectedDirector: number | null = null;
   public error: string | null = null;
 
   public constructor(public utils: UtilsService) {
@@ -82,7 +85,7 @@ export class SearchComponent {
 
   public getActorsAndDirector(movie: MovieModel): string {
     const actors = MovieService.getMovieActors(movie) || [];
-    return [actors, movie.director.name].join(', ');
+    return [actors, "(" + movie.director.name + ")"].join(', ');
   }
 
   public generateSearchCriteria(source: Projection[]) {
@@ -105,6 +108,8 @@ export class SearchComponent {
       .catch((e: AxiosError) => (this.error = `${e.code}: ${e.message}`));
 
     this.priceList = [...new Set(this.allData.map(x => x.price))];
+    MovieService.getAllActors().then(rsp => (this.actorList = rsp.data))
+    MovieService.getAllDirectors().then(rsp => (this.directorList = rsp.data))
     this.ratingList = ["2+", "3+", "4+"];
   }
 
@@ -117,6 +122,8 @@ export class SearchComponent {
     this.selectedStatus = null;
     this.selectedPrice = null;
     this.selectedRating = null;
+    this.selectedActor = null;
+    this.selectedDirector = null;
     this.dataSource = [...this.allData];
     this.generateSearchCriteria(this.allData);
   }
@@ -129,8 +136,9 @@ export class SearchComponent {
         if (!this.userInput) return true;
         return (
           obj.movie.originalTitle.toLowerCase().includes(this.userInput.toLowerCase()) ||
-          obj.movie.movieId.toString().includes(this.userInput) ||
-          obj.movie.shortDescription.includes(this.userInput)
+          obj.movie.title.toLowerCase().includes(this.userInput.toLowerCase()) ||
+          obj.movie.movieId.toString().includes(this.userInput.toLowerCase()) ||
+          obj.movie.shortDescription.includes(this.userInput.toLowerCase())
         );
       })
       .filter((obj) => {
@@ -151,7 +159,7 @@ export class SearchComponent {
       })
       .filter((obj) => {
         if (!this.selectedRating) return true;
-        let selectedRatingInt: number = parseInt(this.selectedRating[0], 10)   ;
+        let selectedRatingInt: number = parseInt(this.selectedRating[0], 10);
         return obj.averageRating >= selectedRatingInt;
       })
       .filter((obj) => {
@@ -167,6 +175,15 @@ export class SearchComponent {
         const end = new Date(`${this.selectedCreatedAtDate}T23:59:59`);
         const target = new Date(obj.movie.startDate);
         return start <= target && target <= end;
+      })
+      .filter((obj) => {
+        if (!this.selectedActor) return true;
+        let temp =obj.movie.movieActors.some(actor => actor.actorId === this.selectedActor)
+        return temp;
+      })
+      .filter((obj) => {
+        if (!this.selectedDirector) return true;
+        return obj.movie.director.directorId === this.selectedDirector;
       });
     this.generateSearchCriteria(this.allData);
   }

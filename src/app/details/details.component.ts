@@ -5,19 +5,20 @@ import { MovieService } from '../../services/movieService';
 import {CommonModule, DatePipe, NgIf} from '@angular/common';
 import { UtilsService } from '../../services/utils.service';
 import { LoadingComponent } from "../loading/loading.component";
-import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { SafePipe } from "../safe.pipe";
 import {MovieModel} from '../../models/movie.model';
 import {Projection} from '../../models/projection.model';
 import {AxiosError} from 'axios';
-import {MatIcon} from '@angular/material/icon';
-import {Review} from '../../models/review.model';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-details',
-  imports: [NgIf, CommonModule, MatIcon, LoadingComponent, MatCardModule, MatListModule, MatButtonModule, RouterLink, DatePipe],
+  imports: [NgIf, CommonModule, LoadingComponent, MatCardModule, MatListModule, MatButtonModule, RouterLink, DatePipe, MatChipsModule,
+    MatCardModule,
+    MatIconModule],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
