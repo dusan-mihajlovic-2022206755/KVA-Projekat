@@ -45,6 +45,11 @@ export class HomeComponent {
       ).then(()=>{
       if (user !== null){
         this.favouriteGenreProjections = this.projections!.filter(x => x.movie.movieGenres.find(y => y.genre.name === user.favouriteGenre)) || null
+
+        const favouriteProjectionIds = new Set(this.favouriteGenreProjections?.map(p => p.id));
+        this.projections = this.projections?.filter(x =>
+          !favouriteProjectionIds.has(x.id)
+        ) || null;
       }
     })
       .catch((e: AxiosError) => {
